@@ -1,0 +1,9 @@
+---
+import { getPopularMovies, baseImgPath } from "../lib/popular";
+import Poster from "./Poster.astro";
+const popularMovies = await getPopularMovies();
+---
+
+<div class="flex gap-4 h-72">
+    {popularMovies.map((movie) => <Poster img={baseImgPath} movie={movie} />)}
+</div>

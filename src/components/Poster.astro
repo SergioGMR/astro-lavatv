@@ -1,0 +1,43 @@
+---
+interface Props {
+	img: string;
+	movie: Movie;
+}
+interface Movie {
+	id: number;
+	backdrop_path: string;
+	title: string | null;
+	name: string | null;
+	overview: string;
+	release_date: string | null;
+	first_air_date: string | null;
+}
+
+const { img, movie } = Astro.props;
+const date = new Date(movie.release_date ?? movie.first_air_date);
+const localeDate = date.toLocaleDateString("es-ES", {
+	month: "numeric",
+	day: "numeric",
+	year: "numeric",
+});
+const title = movie.title ?? movie.name;
+const slug = title.replace(/ /g, "-").toLowerCase();
+const type = movie.title ? "movie" : "tv";
+---
+
+<a
+	href={`/details/${type}/${movie.id}/${slug}`}
+	aria-label={`Ver detalles de ${title}`}
+	:type={type}
+	:item={movie}
+	:id={movie.id}
+	class="bg-cover bg-center w-52 h-auto rounded-lg overflow-hidden"
+	style={`background-image: url(${img}${movie.backdrop_path})`}
+>
+	<div class="bg-black/50 w-full h-full p-2 hover:backdrop-blur-sm">
+		<h2 class="text-white text-lg font-bold">
+			{title}
+		</h2>
+		<p class="text-white text-sm">{localeDate}</p>
+	</div>
+</a>

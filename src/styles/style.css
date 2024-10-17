@@ -1,0 +1,170 @@
+html,
+body {
+    margin: 0;
+    padding: 0;
+    color: #FFF;
+    width: 100dvw;
+    height: 100dvh;
+    font-family: "Open Sans", sans-serif;
+    background: #000;
+}
+
+a,
+a :visited {
+    text-decoration: none;
+    color: #FFF;
+}
+
+#logo_intro {
+    font-size: 4rem;
+    padding: 2rem;
+    background-color: #000;
+}
+
+/* BG */
+
+.sports_bg {
+    background: url(../img/bgs/sports_bg.jpg) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+/* ANIMATED BG */
+
+.animatedbg {
+    background: linear-gradient(-45deg, #7e2105, #e73c7e, #ad2a6c, #000000);
+    background-size: 400% 400%;
+    animation: gradient 15s ease infinite;
+    height: 100vh;
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+#preloader-bar {
+    background-color: #7f858f;
+}
+
+/* MAIN MENU */
+
+header {
+    width: 100vw;
+    height: 8vh;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /*background-color: #000000;*/
+    background-image: linear-gradient(to top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0), rgba(0, 0, 0, 0), rgb(0, 0, 0, 0.5));
+    font-weight: bold;
+}
+
+main {
+    height: 92vh;
+    max-height: 92vh;
+    width: 96vw;
+    padding: 0 2vw;
+}
+
+.logo {
+    font-size: 2rem;
+    background-color: #000;
+    padding: 3px 10px;
+}
+
+.menu-link {
+    font-size: 1.5rem;
+    text-align: center;
+    padding: 0.8rem 1.5rem;
+}
+
+.menu-active {
+    background-color: #58C8B6;
+    color: black;
+}
+
+#mainmenu {
+    padding-left: 1.5rem;
+}
+
+#rightmenu {
+    padding-right: 1.5rem;
+    font-size: 2rem;
+}
+
+#rightmenu .menu-link {
+    padding: 0.8rem 0.5rem;
+}
+
+.weathericon {
+    height: 7vh;
+    width: auto;
+    vertical-align: middle;
+}
+
+.searchicon {
+    height: 7vh;
+    width: auto;
+    vertical-align: middle;
+}
+
+.time {
+    vertical-align: middle;
+}
+
+.movie_poster {
+    width: 11vw;
+    height: 35vh;
+    display: inline-block;
+    background-color: #000;
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin: 1rem;
+    border-radius: 15px;
+}
+
+#popular,
+#generalistas {
+    display: block;
+    max-width: 98%;
+}
+
+.cadena_radio {
+    display: inline-block;
+    text-align: center;
+}
+
+.cadena_radio:hover {
+    background: #58C8B6;
+    color: #000;
+    font-weight: bold;
+}
+
+
+.cadenatv {
+    width: 8rem;
+    height: auto;
+    margin: 1rem;
+}
+
+.match_poster {
+    width: 20vw;
+    height: 25vh;
+    display: inline-block;
+    background-color: #000;
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin: 1rem;
+}

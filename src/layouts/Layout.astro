@@ -1,0 +1,31 @@
+---
+import Nav from "../components/Nav.astro";
+import Time from "../components/Time";
+import Weather from "../components/Weather";
+
+interface Props {
+	title: string | undefined;
+}
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content="Astro description" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+		<meta name="generator" content={Astro.generator} />
+		<title>
+			LavaTV ::::: {title}
+		</title>
+	</head>
+	<body class="bg-black container mx-auto">
+		<header></header>
+		<Nav />
+		<slot />
+		<footer></footer>
+	</body>
+</html>

@@ -1,0 +1,18 @@
+---
+import BackgroundVideo from "@components/Video";
+import Layout from "@layouts/Layout.astro";
+import { getBackropImage, getDetails } from "@lib/details";
+const { resource, id, slug } = Astro.params;
+const title = slug.replace(/-/g, " ").toUpperCase();
+const details = await getDetails(resource, id);
+const backgroundImage = getBackropImage(details.backdrop_path);
+console.log(backgroundImage);
+---
+
+<Layout title={title}>
+    <BackgroundVideo
+        videoId={details.videos.results[1].key}
+        title={title}
+        backgroundImage={backgroundImage}
+    />
+</Layout>

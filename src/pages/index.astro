@@ -1,0 +1,13 @@
+---
+import PopularMovies from "../components/PopularMovies.astro";
+import PopularTVShows from "../components/PopularTVShows.astro";
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Inicio">
+    <div class="container text-white gap-y-12 py-12">
+        <PopularMovies />
+        <div class="my-16 border-t border-gray-700"></div>
+        <PopularTVShows />
+    </div>
+</Layout>
