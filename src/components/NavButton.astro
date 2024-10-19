@@ -6,9 +6,14 @@ interface Props {
     iconPosition?: "left" | "right";
 }
 const { text, href, icon, iconPosition } = Astro.props as Props;
+import { Icon } from "astro-icon/components";
 ---
-<a class="text-2xl text-white py-1 px-3 hover:bg-red-500/90 rounded-md transition-all duration-300" href={href}>
-    {icon && iconPosition === "left" && <i class={icon}></i>}
+
+<a
+    class="text-2xl text-white py-1 px-3 hover:bg-red-500/90 rounded-md transition-all duration-300 flex max-w-max items-center gap-x-2"
+    href={href}
+>
+    {icon && iconPosition === "left" && <Icon name={icon} class="size-6" />}
     {text}
-    {icon && iconPosition === "right" && <i class={icon}></i>}
+    {icon && iconPosition === "right" && <Icon name={icon} class="size-6" />}
 </a>

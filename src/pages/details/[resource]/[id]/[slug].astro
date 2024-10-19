@@ -11,10 +11,15 @@ const backgroundImage = getBackropImage(details.backdrop_path);
 ---
 
 <Layout title={title}>
-   <div class="mt-4">
-    <NavButton text="Volver" href="/" icon="fa-solid fa-arrow-left" iconPosition="left" />
-   </div>
-<!--     {details.videos.results[1]?.key && (
+    <div class="mt-4 ml-10 lg:ml-0">
+        <NavButton
+            text="Volver"
+            href="/"
+            icon="arrow-left"
+            iconPosition="left"
+        />
+    </div>
+    <!--     {details.videos.results[1]?.key && (
         <BackgroundVideo
                 videoId={details.videos.results[1]?.key}
                 title={title}
