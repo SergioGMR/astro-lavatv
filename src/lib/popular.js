@@ -1,5 +1,5 @@
 const baseUrl = "https://api.themoviedb.org/3"
-const endUrl = "/popular?include_adult=false&include_video=true&language=es-ES&page=1&sort_by=popularity.desc&api_key="
+const endUrl = "/popular?include_adult=false&language=es-ES&page=1&sort_by=popularity.desc&api_key="
 const options = { method: 'GET', headers: { accept: 'application/json' } };
 const getPopularMovies = async () => {
     const url = `${baseUrl}/movie${endUrl}${import.meta.env.TMDB_API_KEY}`
@@ -8,7 +8,7 @@ const getPopularMovies = async () => {
         options
     );
     const data = await response.json();
-    return data.results.slice(0, 7);
+    return data.results
 }
 const getPopularTvShows = async () => {
     const response = await fetch(
@@ -16,7 +16,7 @@ const getPopularTvShows = async () => {
         options
     );
     const data = await response.json();
-    return data.results.slice(0, 7);
+    return data.results
 }
 const baseImgPath = "https://image.tmdb.org/t/p/w500";
 

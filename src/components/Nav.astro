@@ -2,12 +2,11 @@
 import buttons from "src/data/buttons";
 import NavButton from "./NavButton.astro";
 import Time from "./Time";
-import Weather from "./Weather";
 ---
 
 <nav
   id="mainmenu"
-  class="flex justify-between mx-12 md:mx-0 items-center text-white mt-4"
+  class="flex justify-between mx-12 lg:mx-0 items-center text-white mt-4"
 >
   <!-- Logo -->
   <div class="flex items-center gap-2">
@@ -42,7 +41,11 @@ import Weather from "./Weather";
     id="menu"
     class="hidden lg:flex lg:flex-grow lg:justify-evenly items-center"
   >
-  {buttons.map((button) => <NavButton text={button.text} href={button.href} />)}
+    {
+      buttons.map((button) => (
+        <NavButton text={button.text} href={button.href} />
+      ))
+    }
   </div>
 
   <!-- Reloj y clima -->
@@ -53,7 +56,10 @@ import Weather from "./Weather";
 </nav>
 
 <!-- Menú desplegable para móvil -->
-<div id="mobile-menu" class="lg:hidden hidden flex-col items-center bg-black">
+<div
+  id="mobile-menu"
+  class="lg:hidden hidden flex-col items-center bg-black m-10 gap-y-12 w-1/3 md:w-1/6"
+>
   {buttons.map((button) => <NavButton text={button.text} href={button.href} />)}
   <!-- También puedes añadir Reloj y Clima aquí si lo prefieres -->
 </div>

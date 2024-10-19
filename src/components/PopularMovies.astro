@@ -4,6 +4,11 @@ import Poster from "./Poster.astro";
 const popularMovies = await getPopularMovies();
 ---
 
-<div class="flex justify-between items-center h-full w-full">
-    {popularMovies.map((movie) => <Poster img={baseImgPath} movie={movie}  />)}
+<h2 class="md:ml-24 lg:ml-0 text-center md:text-left text-2xl font-bold w-full">
+    Películas Populares
+</h2>
+<div
+    class="flex flex-wrap justify-center lg:justify-between items-center w-full mx-auto md:mx-12 lg:mx-0 gap-12"
+>
+    {popularMovies.map((movie) => <Poster img={baseImgPath} movie={movie} />)}
 </div>
