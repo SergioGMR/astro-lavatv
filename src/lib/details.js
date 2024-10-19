@@ -9,7 +9,7 @@ const getDetails = async (resource, id) => {
 }
 
 const getBackropImage = (backdropPath) => {
-    return `https://image.tmdb.org/t/p/original${backdropPath}`
+    return `https://image.tmdb.org/t/p/w1280${backdropPath}`
 }
 
 export { getDetails, getBackropImage }

@@ -40,10 +40,17 @@ const obtenerCoordenadaPredeterminada = () => {
     return ciudades[Math.floor(Math.random() * ciudades.length)];
 };
 
-const getWeather = async () => {
+const getWeatherWithCache = async (coords, cacheDuration = 10 * 60 * 1000) => {
     try {
         const coords = await obtenerCoordenadas();
-        const apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${coords.lat}&lon=${coords.lon}&appid=${import.meta.env.OPENWEATHER_API_KEY}&units=metric&lang=es`;
+        const apiKey = import.meta.env.OPENWEATHER_API_KEY;
+        console.log(apiKey);
+        if (!apiKey) {
+            console.error("La clave de API de OpenWeather no está definida");
+            throw new Error("Clave de API no disponible");
+        }
+        const apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${coords.lat}&lon=${coords.lon}&units=metric&lang=es&appid=${apiKey}`;
+        console.log(apiUrl);
         const response = await fetch(apiUrl);
         if (!response.ok) {
             throw new Error(`Error en la respuesta de la API: ${response.status}`);
@@ -56,4 +63,4 @@ const getWeather = async () => {
     }
 };
 
-export { getWeather };
+export { obtenerCoordenadas, getWeatherWithCache };

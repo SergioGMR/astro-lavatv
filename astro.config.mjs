@@ -8,14 +8,15 @@ import vercel from '@astrojs/vercel/serverless';
 // https://astro.build/config
 export default defineConfig({
   integrations: [tailwind(), react()],
-  output: 'hybrid',
+  output: 'server',
   build: {
     outDir: './dist',
   },
 
   env: {
     schema: {
-      TMDB_API_KEY: envField.string({ context: 'server', access: 'secret' })
+      TMDB_API_KEY: envField.string({ context: 'server', access: 'secret' }),
+      OPENWEATHER_API_KEY: envField.string({ context: 'server', access: 'secret' }),
     }
   },
 

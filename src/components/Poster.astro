@@ -1,43 +1,32 @@
 ---
+import { getLocaleDate, slugify } from "../lib/utils";
+import type { Movie } from "../interfaces/Movie";
 interface Props {
-	img: string;
-	movie: Movie;
-}
-interface Movie {
-	id: number;
-	backdrop_path: string;
-	title: string | null;
-	name: string | null;
-	overview: string;
-	release_date: string | null;
-	first_air_date: string | null;
+  img: string;
+  movie: Movie;
 }
 
 const { img, movie } = Astro.props;
 const date = new Date(movie.release_date ?? movie.first_air_date);
-const localeDate = date.toLocaleDateString("es-ES", {
-	month: "numeric",
-	day: "numeric",
-	year: "numeric",
-});
+const localeDate = getLocaleDate(date);
 const title = movie.title ?? movie.name;
-const slug = title.replace(/ /g, "-").toLowerCase();
+const slug = slugify(title);
 const type = movie.title ? "movie" : "tv";
 ---
 
 <a
-	href={`/details/${type}/${movie.id}/${slug}`}
-	aria-label={`Ver detalles de ${title}`}
-	:type={type}
-	:item={movie}
-	:id={movie.id}
-	class="bg-cover bg-center w-52 h-auto rounded-lg overflow-hidden"
-	style={`background-image: url(${img}${movie.backdrop_path})`}
+  href={`/details/${type}/${movie.id}/${slug}`}
+  aria-label={`Ver detalles de ${title}`}
+  id={movie.id.toString()}
+  transition:name=`detail-${type}-${movie.id}`
+  transition:animate="slide"
+  class="bg-cover bg-center w-48 h-72 rounded-lg overflow-hidden transition-all duration-300 hover:scale-105"
+  style={`background-image: url(${img}${movie.backdrop_path})`}
 >
-	<div class="bg-black/50 w-full h-full p-2 hover:backdrop-blur-sm">
-		<h2 class="text-white text-lg font-bold">
-			{title}
-		</h2>
-		<p class="text-white text-sm">{localeDate}</p>
-	</div>
+  <div class="bg-black/50 w-full h-full p-2 hover:backdrop-blur-sm">
+    <h2 class="text-white text-lg font-bold">
+      {title}
+    </h2>
+    <p class="ml-2 text-white text-sm">{localeDate}</p>
+  </div>
 </a>

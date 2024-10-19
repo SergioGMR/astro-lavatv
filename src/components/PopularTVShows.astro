@@ -4,6 +4,6 @@ import Poster from "./Poster.astro";
 const popularTvShows = await getPopularTvShows();
 ---
 
-<div class="flex gap-4 h-72">
-    {popularTvShows.map((movie) => <Poster img={baseImgPath} movie={movie} />)}
+<div class="flex justify-between items-center h-full w-full">
+  {popularTvShows.map((movie) => <Poster img={baseImgPath} movie={movie} />)}
 </div>

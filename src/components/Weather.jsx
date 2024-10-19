@@ -1,33 +1,39 @@
+import { obtenerCoordenadas } from '@lib/weather';
 import { useState, useEffect } from 'react';
-import { getWeather } from "../lib/weather";
 
 const Weather = () => {
-    const [weather, setWeather] = useState(null);
+  const [coords, setCoords] = useState(null);
+  const [weather, setWeather] = useState(null);
 
-    useEffect(() => {
-        const fetchWeather = async () => {
-            const weatherData = await getWeather();
-            setWeather(weatherData);
-        };
-        fetchWeather();
-    }, []);
+  useEffect(() => {
+    // obtenerCoordenadas()
+    // .then((coords) => {
+    //   setCoords(coords)
+    // })
+    // .catch((error) => {
+    //   console.error(error)
+    // })
+    // .finally(() => {
+    //   console.log('finally')
+    // })
+    // if (coords) {
+    //   fetch(`/api/weather?lat=${coords.lat}&lon=${coords.lon}`)
+    //     .then((response) => response.json())
+    //     .then((data) => {
+    //       setWeather(data)
+    //     })
+    //     .catch((error) => {
+    //       console.error(error)
+    //     })
+    // }
+  }, [coords, weather])
 
-    if (!weather) return null;
+  return (
+    <div>
+      <h1>Weather</h1>
+      <p>Coords: {JSON.stringify(coords)}</p>
+    </div>
+  )
+}
 
-    return (
-        <div
-            className="text-white flex flex-col items-center"
-            title={`${weather.main.temp}º`}
-        >
-            <img
-                className="size-16"
-                src={`http://openweathermap.org/img/wn/${weather.weather[0].icon}.png`}
-                alt={weather.weather[0].description}
-            />
-            <span className="text-xs capitalize">{weather.name}</span>
-            <span className="text-xs capitalize">{weather.weather[0].description}</span>
-        </div>
-    );
-};
-
-export default Weather;
+export default Weather

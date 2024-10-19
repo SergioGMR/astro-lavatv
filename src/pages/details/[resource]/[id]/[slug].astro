@@ -1,18 +1,33 @@
 ---
+import NavButton from "@components/NavButton.astro";
 import BackgroundVideo from "@components/Video";
 import Layout from "@layouts/Layout.astro";
 import { getBackropImage, getDetails } from "@lib/details";
+import Image from "astro/components/Image.astro";
 const { resource, id, slug } = Astro.params;
 const title = slug.replace(/-/g, " ").toUpperCase();
 const details = await getDetails(resource, id);
 const backgroundImage = getBackropImage(details.backdrop_path);
-console.log(backgroundImage);
 ---
 
 <Layout title={title}>
-    <BackgroundVideo
-        videoId={details.videos.results[1].key}
-        title={title}
-        backgroundImage={backgroundImage}
+   <div class="mt-4">
+    <NavButton text="Volver" href="/" icon="fa-solid fa-arrow-left" iconPosition="left" />
+   </div>
+<!--     {details.videos.results[1]?.key && (
+        <BackgroundVideo
+                videoId={details.videos.results[1]?.key}
+                title={title}
+                transition:name=`detail-${resource}-${id}`
+                backgroundImage={backgroundImage}
+            />
+    )} -->
+    <Image
+        src={backgroundImage}
+        alt={title}
+        width={1280}
+        height={720}
+        class="absolute -z-10 top-0 left-0 w-full h-full object-cover opacity-80 aspect-video"
+        transition:name=`detail-${resource}-${id}`
     />
 </Layout>

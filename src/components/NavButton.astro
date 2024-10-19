@@ -1,0 +1,14 @@
+---
+interface Props {
+    text: string;
+    href: string;
+    icon?: string;
+    iconPosition?: "left" | "right";
+}
+const { text, href, icon, iconPosition } = Astro.props as Props;
+---
+<a class="text-2xl text-white py-1 px-3 hover:bg-red-500/90 rounded-md transition-all duration-300" href={href}>
+    {icon && iconPosition === "left" && <i class={icon}></i>}
+    {text}
+    {icon && iconPosition === "right" && <i class={icon}></i>}
+</a>
