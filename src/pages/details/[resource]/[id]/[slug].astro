@@ -1,18 +1,28 @@
 ---
 import NavButton from "@components/NavButton.astro";
-import BackgroundVideo from "@components/Video";
+import YouTubePlayerWithCarousel from "@components/YouTubePlayerWithCarousel";
 import Layout from "@layouts/Layout.astro";
-import { getAvatarImage, getBackropImage, getDetails } from "@lib/details";
+import { getBackropImage, getDetails } from "@lib/details";
 import { getLocaleDate } from "@lib/utils";
 import { Icon } from "astro-icon/components";
 import Image from "astro/components/Image.astro";
-const { resource, id, slug } = Astro.params;
+const { resource, id } = Astro.params;
 const details = await getDetails(resource, id);
 const backgroundImage = getBackropImage(details.backdrop_path);
-const placeholderImage = "/avatar-placeholder.webp";
+const videos = details.videos.results
+    .filter((video) => video.site === "YouTube")
+    .slice(0, 5);
+const formater = new Intl.ListFormat("es-ES", {
+    style: "long",
+    type: "conjunction",
+});
+const cast = formater.format(
+    details.credits.cast.slice(0, 10).map((actor) => actor.name),
+);
+const genres = formater.format(details.genres.map((genre) => genre.name));
 ---
 
-<Layout title={details.title}>
+<Layout title={details.title ?? details.name}>
     <div class="mt-4 ml-10 lg:ml-0">
         <NavButton
             text="Volver"
@@ -21,37 +31,54 @@ const placeholderImage = "/avatar-placeholder.webp";
             iconPosition="left"
         />
     </div>
-    <!--     {details.videos.results[1]?.key && (
-        <BackgroundVideo
-                videoId={details.videos.results[1]?.key}
-                title={title}
-                transition:name=`detail-${resource}-${id}`
-                backgroundImage={backgroundImage}
-            />
-    )} -->
     <Image
         src={backgroundImage}
-        alt={details.title}
+        alt={details.title ?? details.name}
         width={1280}
         height={720}
         class="absolute -z-10 top-0 left-0 w-full h-full object-cover opacity-80 aspect-video"
         transition:name=`detail-${resource}-${id}`
     />
-    <section class="flex gap-x-24">
+    <section class="flex gap-x-10">
         <!-- Movie Info -->
         <div
             class="flex flex-col justify-end items-start max-w-2xl h-[calc(100vh-10rem)]"
         >
-            <div class="space-y-6 bg-black/50 p-10 rounded-lg">
+            <div class="space-y-6 bg-black/50 p-10 rounded-lg w-full">
                 <h2
                     class="text-gray-200 text-6xl font-bold capitalize underline decoration-solid underline-offset-8"
                 >
-                    {details.title}
+                    {details.title ?? details.name}
                 </h2>
-                <p class="text-xl text-gray-200">
-                    {details.overview}
+                <p class="flex text-xl text-gray-200 min-h-4">
+                    {
+                        details.overview
+                            ? details.overview.slice(0, 125) + "..."
+                            : "No hay descripción"
+                    }
                 </p>
-                <div class="flex space-x-4">
+                {
+                    details.first_air_date && (
+                        <p class="flex text-xl text-gray-200 min-h-4">
+                            {`Primera emisión: ${getLocaleDate(details.first_air_date)}`}
+                        </p>
+                    )
+                }
+                {
+                    details.number_of_seasons && (
+                        <p class="flex text-xl text-gray-200 min-h-4">
+                            {`Número de temporadas: ${details.number_of_seasons}`}
+                        </p>
+                    )
+                }
+                {
+                    details.number_of_episodes && (
+                        <p class="flex text-xl text-gray-200 min-h-4">
+                            {`Número de episodios: ${details.number_of_episodes}`}
+                        </p>
+                    )
+                }
+                <div class="flex space-x-4 w-full">
                     <button
                         id="playButton"
                         class="bg-white text-black hover:bg-gray-200 px-4 py-2 rounded flex items-center"
@@ -77,93 +104,61 @@ const placeholderImage = "/avatar-placeholder.webp";
                 </div>
             </div>
         </div>
-        <!-- Actors List -->
-        <div class="flex flex-col justify-end items-center">
-            <div class="space-y-6 bg-black/50 p-10 rounded-lg">
-                <div
-                    class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4"
-                >
-                    {
-                        details?.credits.cast
-                            .slice(0, 10)
-                            .map((actor, index) => (
-                                <div class={`flex flex-col items-center`}>
-                                    <img
-                                        src={
-                                            actor.profile_path
-                                                ? getAvatarImage(
-                                                      actor.profile_path,
-                                                  )
-                                                : placeholderImage
-                                        }
-                                        alt={actor.name}
-                                        class={`w-24 h-24 rounded-full object-cover mb-2 ${index <= 4 ? "border-4 border-yellow-400" : ""}`}
-                                    />
-                                    <p
-                                        class={`text-center text-sm text-gray-200 ${actor.important ? "font-bold" : ""}`}
-                                    >
-                                        {actor.name}
-                                    </p>
-                                    {index <= 4 && (
-                                        <span class="text-yellow-400 text-sm">
-                                            Papel principal
-                                        </span>
-                                    )}
-                                </div>
-                            ))
-                    }
+        <!-- Videos Carousel -->
+        {
+            videos.length > 0 && (
+                <div class="flex flex-col justify-end items-center w-full max-w-[50rem]">
+                    <div class="bg-black/50 p-10 rounded-lg flex flex-col justify-between w-full">
+                        <YouTubePlayerWithCarousel
+                            client:load
+                            videos={videos}
+                            initialVideoId={videos[0]?.key}
+                        />
+                    </div>
                 </div>
-            </div>
-        </div>
+            )
+        }
     </section>
-    <!-- Video Player (hidden by default) -->
-    <div
-        id="videoPlayer"
-        class="hidden absolute inset-0 bg-black items-center justify-center"
-    >
-        <video class="w-full h-full object-cover" controls>
-            <source src="/placeholder.mp4" type="video/mp4" />
-            Tu navegador no soporta el elemento de video.
-        </video>
+</Layout>
+
+<!-- Info Dialog (hidden by default) -->
+<div
+    id="infoDialog"
+    class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+>
+    <div class="bg-gray-800 text-white p-8 rounded-lg max-w-lg">
+        <h3 class="text-2xl font-bold mb-4">
+            Detalles de {details.title ?? details.name}
+        </h3>
+        <p>
+            <span class="font-bold">Año:</span>
+            {getLocaleDate(details.release_date ?? details.first_air_date)}
+        </p>
+        <p>
+            <span class="font-bold">Director:</span>
+            {
+                details.credits.crew?.find(
+                    (member) => member.job === "Director",
+                )?.name
+            }
+        </p>
+        <p>
+            <span class="font-bold">Reparto:</span>
+            {cast}
+        </p>
+        <p>
+            <span class="font-bold">Género:</span>
+            {genres}
+        </p>
+        <p class="mt-4">{details.overview}</p>
         <button
-            id="closeVideoButton"
-            class="absolute top-4 right-4 bg-white text-black hover:bg-gray-200 px-4 py-2 rounded"
+            id="closeInfoButton"
+            class="mt-6 bg-white text-black hover:bg-gray-200 px-4 py-2 rounded w-full"
         >
             Cerrar
         </button>
     </div>
-
-    <!-- Info Dialog (hidden by default) -->
-    <div
-        id="infoDialog"
-        class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
-    >
-        <div class="bg-gray-800 text-white p-8 rounded-lg max-w-lg">
-            <h3 class="text-2xl font-bold mb-4">Detalles de la Película</h3>
-            <p>
-                Año: {
-                    getLocaleDate(
-                        details.release_date ?? details.first_air_date,
-                    )
-                }
-            </p>
-            <p>Director: Nombre del Director</p>
-            <p>Reparto: Actor 1, Actor 2, Actor 3</p>
-            <p>
-                Género: {
-                    details.genres.map((genre) => genre.name).toLocaleString()
-                }
-            </p>
-            <p class="mt-4">{details.overview}</p>
-            <button
-                id="closeInfoButton"
-                class="mt-6 bg-white text-black hover:bg-gray-200 px-4 py-2 rounded w-full"
-            >
-                Cerrar
-            </button>
-        </div>
-    </div>
-</Layout>
+</div>
 
 <script>
     const playButton = document.getElementById("playButton");
@@ -175,10 +170,12 @@ const placeholderImage = "/avatar-placeholder.webp";
 
     playButton.addEventListener("click", () => {
         videoPlayer.classList.remove("hidden");
+        closeVideoButton.classList.remove("hidden");
     });
 
     closeVideoButton.addEventListener("click", () => {
         videoPlayer.classList.add("hidden");
+        closeVideoButton.classList.add("hidden");
     });
 
     infoButton.addEventListener("click", () => {
