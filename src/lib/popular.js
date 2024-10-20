@@ -18,6 +18,6 @@ const getPopularTvShows = async () => {
     const data = await response.json();
     return data.results
 }
-const baseImgPath = "https://image.tmdb.org/t/p/w500";
+const baseImgPath = "https://image.tmdb.org/t/p/w780";
 
 export { getPopularMovies, getPopularTvShows, baseImgPath };

@@ -1,9 +1,16 @@
 ---
-import { getPopularTvShows, baseImgPath } from "../lib/popular";
-import Poster from "./Poster.astro";
+import { getPopularTvShows } from "../lib/popular";
+import PosterCard from "./PosterCard.astro";
 const popularTvShows = await getPopularTvShows();
 ---
 
-<div class="grid grid-cols-5 justify-center items-center w-full gap-y-12">
-  {popularTvShows.map((movie) => <Poster img={baseImgPath} movie={movie} />)}
+<h2
+  class="mt-12 md:ml-24 lg:ml-0 text-center md:text-left text-2xl font-bold w-full"
+>
+  Series Populares
+</h2>
+<div
+  class="flex flex-wrap justify-center lg:justify-between items-center w-full mx-auto md:mx-12 lg:mx-0 gap-12"
+>
+  {popularTvShows.map((movie) => <PosterCard movie={movie} />)}
 </div>

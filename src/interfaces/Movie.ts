@@ -6,6 +6,7 @@ interface Movie {
 	overview: string;
 	release_date: string | null;
 	first_air_date: string | null;
+	vote_average: number;
 }
 
 export type { Movie }

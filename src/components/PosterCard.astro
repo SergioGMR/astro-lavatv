@@ -1,0 +1,64 @@
+---
+import { getLocaleDate, slugify } from "@lib/utils";
+import { Icon } from "astro-icon/components";
+import type { Movie } from "src/interfaces/Movie";
+import { baseImgPath } from "src/lib/popular";
+
+interface Props {
+    movie: Movie;
+}
+
+const { movie } = Astro.props;
+
+const stars = Array.from({ length: 5 }, (_, index) => ({
+    filled: index < Math.floor(movie.vote_average),
+}));
+const releaseDate = getLocaleDate(movie.release_date ?? movie.first_air_date);
+const slug = slugify(movie.title ?? movie.name);
+const type = movie.title ? "movie" : "tv";
+---
+
+<a href={`/details/${type}/${movie.id}/${slug}`}>
+    <div class="relative w-64 h-96 rounded-lg overflow-hidden group">
+        <div
+            class="absolute inset-0 bg-cover bg-center transition-transform duration-300 ease-in-out group-hover:scale-110"
+            style={`background-image: url(${baseImgPath}${movie.backdrop_path})`}
+        >
+        </div>
+        <div
+            class="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent opacity-70 transition-opacity duration-300 ease-in-out group-hover:opacity-90"
+        >
+        </div>
+        <div
+            class="absolute inset-0 p-6 flex flex-col justify-end transition-transform duration-300 ease-in-out group-hover:translate-y-2"
+        >
+            <h2 class="text-2xl font-bold text-white mb-2">
+                {movie.title ?? movie.name}
+            </h2>
+            <p class="text-sm text-gray-300 mb-4">
+                {releaseDate}
+            </p>
+            <div class="flex items-center space-x-1 mb-2">
+                {
+                    stars.map((star) => (
+                        <Icon
+                            name={star.filled ? "star" : "star-o"}
+                            class={`size-6 ${star.filled ? "text-yellow-400 fill-yellow-400" : "text-gray-300"}`}
+                        />
+                    ))
+                }
+            </div>
+            <div
+                class="h-1 w-0 bg-yellow-400 transition-all duration-300 ease-in-out group-hover:w-full"
+            >
+            </div>
+        </div>
+    </div>
+</a>
+
+<style>
+    [astro-icon="star"] {
+        width: 20px;
+        height: 20px;
+    }
+</style>

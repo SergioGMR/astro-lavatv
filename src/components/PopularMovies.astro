@@ -1,6 +1,6 @@
 ---
 import { getPopularMovies, baseImgPath } from "../lib/popular";
-import Poster from "./Poster.astro";
+import PosterCard from "./PosterCard.astro";
 const popularMovies = await getPopularMovies();
 ---
 
@@ -10,5 +10,5 @@ const popularMovies = await getPopularMovies();
 <div
     class="flex flex-wrap justify-center lg:justify-between items-center w-full mx-auto md:mx-12 lg:mx-0 gap-12"
 >
-    {popularMovies.map((movie) => <Poster img={baseImgPath} movie={movie} />)}
+    {popularMovies.map((movie) => <PosterCard movie={movie} />)}
 </div>

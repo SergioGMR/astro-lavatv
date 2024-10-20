@@ -2,15 +2,17 @@
 import NavButton from "@components/NavButton.astro";
 import BackgroundVideo from "@components/Video";
 import Layout from "@layouts/Layout.astro";
-import { getBackropImage, getDetails } from "@lib/details";
+import { getAvatarImage, getBackropImage, getDetails } from "@lib/details";
+import { getLocaleDate } from "@lib/utils";
+import { Icon } from "astro-icon/components";
 import Image from "astro/components/Image.astro";
 const { resource, id, slug } = Astro.params;
-const title = slug.replace(/-/g, " ").toUpperCase();
 const details = await getDetails(resource, id);
 const backgroundImage = getBackropImage(details.backdrop_path);
+const placeholderImage = "/avatar-placeholder.webp";
 ---
 
-<Layout title={title}>
+<Layout title={details.title}>
     <div class="mt-4 ml-10 lg:ml-0">
         <NavButton
             text="Volver"
@@ -29,10 +31,161 @@ const backgroundImage = getBackropImage(details.backdrop_path);
     )} -->
     <Image
         src={backgroundImage}
-        alt={title}
+        alt={details.title}
         width={1280}
         height={720}
         class="absolute -z-10 top-0 left-0 w-full h-full object-cover opacity-80 aspect-video"
         transition:name=`detail-${resource}-${id}`
     />
+    <section class="flex gap-x-24">
+        <!-- Movie Info -->
+        <div
+            class="flex flex-col justify-end items-start max-w-2xl h-[calc(100vh-10rem)]"
+        >
+            <div class="space-y-6 bg-black/50 p-10 rounded-lg">
+                <h2
+                    class="text-gray-200 text-6xl font-bold capitalize underline decoration-solid underline-offset-8"
+                >
+                    {details.title}
+                </h2>
+                <p class="text-xl text-gray-200">
+                    {details.overview}
+                </p>
+                <div class="flex space-x-4">
+                    <button
+                        id="playButton"
+                        class="bg-white text-black hover:bg-gray-200 px-4 py-2 rounded flex items-center"
+                    >
+                        <Icon name="play" class="w-4 h-4 mr-2" /> Reproducir
+                    </button>
+                    <button
+                        id="infoButton"
+                        class="bg-gray-800 text-white hover:bg-gray-700 px-4 py-2 rounded flex items-center"
+                    >
+                        <Icon name="info" class="w-4 h-4 mr-2" /> Más Información
+                    </button>
+                    <button
+                        class="text-white hover:text-gray-300 px-4 py-2 rounded flex items-center"
+                    >
+                        <Icon name="plus" class="w-4 h-4 mr-2" /> Mi Lista
+                    </button>
+                    <button
+                        class="text-white hover:text-gray-300 px-4 py-2 rounded flex items-center"
+                    >
+                        <Icon name="thumb-up" class="w-4 h-4 mr-2" /> Me Gusta
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Actors List -->
+        <div class="flex flex-col justify-end items-center">
+            <div class="space-y-6 bg-black/50 p-10 rounded-lg">
+                <div
+                    class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4"
+                >
+                    {
+                        details?.credits.cast
+                            .slice(0, 10)
+                            .map((actor, index) => (
+                                <div class={`flex flex-col items-center`}>
+                                    <img
+                                        src={
+                                            actor.profile_path
+                                                ? getAvatarImage(
+                                                      actor.profile_path,
+                                                  )
+                                                : placeholderImage
+                                        }
+                                        alt={actor.name}
+                                        class={`w-24 h-24 rounded-full object-cover mb-2 ${index <= 4 ? "border-4 border-yellow-400" : ""}`}
+                                    />
+                                    <p
+                                        class={`text-center text-sm text-gray-200 ${actor.important ? "font-bold" : ""}`}
+                                    >
+                                        {actor.name}
+                                    </p>
+                                    {index <= 4 && (
+                                        <span class="text-yellow-400 text-sm">
+                                            Papel principal
+                                        </span>
+                                    )}
+                                </div>
+                            ))
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Video Player (hidden by default) -->
+    <div
+        id="videoPlayer"
+        class="hidden absolute inset-0 bg-black items-center justify-center"
+    >
+        <video class="w-full h-full object-cover" controls>
+            <source src="/placeholder.mp4" type="video/mp4" />
+            Tu navegador no soporta el elemento de video.
+        </video>
+        <button
+            id="closeVideoButton"
+            class="absolute top-4 right-4 bg-white text-black hover:bg-gray-200 px-4 py-2 rounded"
+        >
+            Cerrar
+        </button>
+    </div>
+
+    <!-- Info Dialog (hidden by default) -->
+    <div
+        id="infoDialog"
+        class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+    >
+        <div class="bg-gray-800 text-white p-8 rounded-lg max-w-lg">
+            <h3 class="text-2xl font-bold mb-4">Detalles de la Película</h3>
+            <p>
+                Año: {
+                    getLocaleDate(
+                        details.release_date ?? details.first_air_date,
+                    )
+                }
+            </p>
+            <p>Director: Nombre del Director</p>
+            <p>Reparto: Actor 1, Actor 2, Actor 3</p>
+            <p>
+                Género: {
+                    details.genres.map((genre) => genre.name).toLocaleString()
+                }
+            </p>
+            <p class="mt-4">{details.overview}</p>
+            <button
+                id="closeInfoButton"
+                class="mt-6 bg-white text-black hover:bg-gray-200 px-4 py-2 rounded w-full"
+            >
+                Cerrar
+            </button>
+        </div>
+    </div>
 </Layout>
+
+<script>
+    const playButton = document.getElementById("playButton");
+    const videoPlayer = document.getElementById("videoPlayer");
+    const closeVideoButton = document.getElementById("closeVideoButton");
+    const infoButton = document.getElementById("infoButton");
+    const infoDialog = document.getElementById("infoDialog");
+    const closeInfoButton = document.getElementById("closeInfoButton");
+
+    playButton.addEventListener("click", () => {
+        videoPlayer.classList.remove("hidden");
+    });
+
+    closeVideoButton.addEventListener("click", () => {
+        videoPlayer.classList.add("hidden");
+    });
+
+    infoButton.addEventListener("click", () => {
+        infoDialog.classList.remove("hidden");
+    });
+
+    closeInfoButton.addEventListener("click", () => {
+        infoDialog.classList.add("hidden");
+    });
+</script>

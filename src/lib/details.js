@@ -9,7 +9,10 @@ const getDetails = async (resource, id) => {
 }
 
 const getBackropImage = (backdropPath) => {
-    return `https://image.tmdb.org/t/p/w1280${backdropPath}`
+    return `https://image.tmdb.org/t/p/original${backdropPath}`
+}
+const getAvatarImage = (avatarPath) => {
+    return `https://image.tmdb.org/t/p/w185${avatarPath}`
 }
 
-export { getDetails, getBackropImage }
+export { getDetails, getBackropImage, getAvatarImage }

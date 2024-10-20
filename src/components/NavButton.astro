@@ -10,10 +10,18 @@ import { Icon } from "astro-icon/components";
 ---
 
 <a
-    class="text-2xl text-white py-1 px-3 hover:bg-red-500/90 rounded-md transition-all duration-300 flex max-w-max items-center gap-x-2"
+    class="bg-white text-black hover:bg-gray-200 px-4 py-2 rounded flex justify-between items-center w-max"
     href={href}
 >
-    {icon && iconPosition === "left" && <Icon name={icon} class="size-6" />}
-    {text}
-    {icon && iconPosition === "right" && <Icon name={icon} class="size-6" />}
+    {
+        icon && iconPosition === "left" && (
+            <Icon name={icon} class="size-4 mr-2" />
+        )
+    }
+    <span class="text-lg">{text}</span>
+    {
+        icon && iconPosition === "right" && (
+            <Icon name={icon} class="size-6 ml-2" />
+        )
+    }
 </a>
