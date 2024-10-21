@@ -1,14 +1,28 @@
 ---
-import PopularMovies from "../components/PopularMovies.astro";
-import PopularTVShows from "../components/PopularTVShows.astro";
-import Layout from "../layouts/Layout.astro";
+import Profiles from "@components/Profiles";
 ---
 
-<Layout title="Inicio">
-    <div
-        class="flex flex-col justify-between items-center w-full h-full text-white gap-y-12 py-12"
-    >
-        <PopularMovies />
-        <PopularTVShows />
-    </div>
-</Layout>
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="description" content="Astro description" />
+        <meta name="viewport" content="width=device-width" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link rel="preconnect" href="https://api.dicebear.com" />
+        <link rel="dns-prefetch" href="https://api.dicebear.com" />
+        <meta name="generator" content={Astro.generator} />
+        <title>LavaTV - Elige tu perfil</title>
+    </head>
+    <body>
+        <main
+            id="main"
+            class="bg-black text-white flex justify-center items-center w-screen h-screen"
+        >
+            <section class="flex flex-col gap-y-16 justify-center items-center">
+                <h1 class="text-5xl font-bold">¿Quién eres?</h1>
+                <Profiles client:load />
+            </section>
+        </main>
+    </body>
+</html>

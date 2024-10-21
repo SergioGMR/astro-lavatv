@@ -2,6 +2,7 @@
 import buttons from "src/data/buttons";
 import NavButton from "./NavButton.astro";
 import Time from "./Time";
+import NavProfile from "./NavProfile";
 ---
 
 <nav
@@ -52,6 +53,7 @@ import Time from "./Time";
   <div class="hidden lg:flex justify-end items-center gap-x-10">
     <Time client:only="react" />
     <!-- <Weather client:load/> -->
+    <NavProfile client:load />
   </div>
 </nav>
 

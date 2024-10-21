@@ -1,0 +1,14 @@
+---
+import PopularMovies from "../components/PopularMovies.astro";
+import PopularTVShows from "../components/PopularTVShows.astro";
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Inicio">
+    <div
+        class="flex flex-col justify-between items-center w-full h-full text-white gap-y-12 py-12"
+    >
+        <PopularMovies />
+        <PopularTVShows />
+    </div>
+</Layout>
