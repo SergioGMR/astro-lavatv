@@ -18,6 +18,7 @@ export default function ProfileSwitcher() {
             if (savedActiveProfile) {
                 setCurrentProfile(JSON.parse(savedActiveProfile))
             }
+            console.log(currentProfile)
         }
     }, [])
     const handleProfileChange = (profile) => {
@@ -58,16 +59,17 @@ export default function ProfileSwitcher() {
                 >
                     {
                         profiles.map((profile) => (
-                            <DropdownMenu.Item className="group hover:bg-black hover:_text-white relative flex h-10 select-none items-center rounded-md pl-6 pr-2 text-sm leading-none text-violet11 outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-violet9 data-[disabled]:text-mauve8 data-[highlighted]:text-violet1">
-                                <button className="flex items-center" onClick={() => handleProfileChange(profile)}>
+                            <DropdownMenu.Item className={`group ${currentProfile?.id === profile.id ? "bg-violet-500 text-white" : ""} hover:bg-black hover:text-white relative flex h-10 select-none items-center rounded-md pl-6 pr-2 text-sm leading-none text-violet11 outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-violet9 data-[disabled]:text-mauve8 data-[highlighted]:text-violet1`}>
+                                <button className="flex items-center w-full" onClick={() => handleProfileChange(profile)}>
                                     <Avatar.Root className="inline-flex mr-6 size-6 select-none items-center justify-center overflow-hidden rounded bg-blackA1 align-middle">
                                         <Avatar.Image
                                             className="size-full rounded-[inherit] object-cover"
                                             src={`${avatarApiUrl}${profile?.kind === "kids" ? profile?.kind : profile?.name}`}
-                                            alt="Colm Tuite"
+                                            alt={profile.name}
                                         />
                                     </Avatar.Root>
                                     {profile.name}
+                                    {`${profile.kind === "kids" ? "👶" : ""}`}
                                 </button>
                             </DropdownMenu.Item>
                         ))
