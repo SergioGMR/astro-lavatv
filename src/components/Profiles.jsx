@@ -8,17 +8,27 @@ const guestProfile = {
 };
 const hcprofiles = [
     {
-        name: "Mike Doe",
+        name: "Mike",
         kind: "pelicula",
         uuid: crypto.randomUUID(),
     },
     {
-        name: "Jane Doe",
+        name: "Mike",
+        kind: "pelicula",
+        uuid: crypto.randomUUID(),
+    },
+    {
+        name: "Mike",
+        kind: "pelicula",
+        uuid: crypto.randomUUID(),
+    },
+    {
+        name: "Jane",
         kind: "tv",
         uuid: crypto.randomUUID(),
     },
     {
-        name: "Billy Doe",
+        name: "Billy",
         kind: "kids",
         uuid: crypto.randomUUID(),
     },
@@ -60,7 +70,7 @@ export default function Profiles() {
         window.location.href = "/main"
     }
     return (
-        <section class="flex gap-x-10">
+        <section class="flex flex-wrap justify-center items-center w-full max-w-sm md:max-w-md lg:max-w-5xl gap-16">
             {
                 profiles.length > 0 &&
                 profiles.map((profile) => (
@@ -68,7 +78,7 @@ export default function Profiles() {
                         onClick={() => handleProfileClick(profile)}
                         data-uuid={profile.uuid}
                         id={profile.uuid}
-                        class={`profileClass flex flex-col items-center gap-y-2 hover:scale-125 transition-all duration-300 ${activeProfile?.uuid === profile.uuid ? "scale-110" : ""}`}
+                        class={`flex flex-col justify-end items-center gap-y-2 hover:scale-125 transition-all duration-300 ${activeProfile?.uuid === profile.uuid ? "scale-125" : ""}`}
                     >
                         <img
                             loading="lazy"
@@ -76,14 +86,16 @@ export default function Profiles() {
                             alt={profile.name}
                             class="w-24 h-24 rounded"
                         />
-                        <h2 class="text-2xl font-bold">
-                            {profile.name}
-                        </h2>
-                        {profile.kind === "kids" && (
-                            <span class="text-sm capitalize">
-                                ( kids )
-                            </span>
-                        )}
+                        <section class="flex flex-col justify-center items-center">
+                            <h2 class="text-2xl font-bold text-wrap max-w-xs">
+                                {profile.name}
+                                {profile.kind === "kids" && (
+                                    <span class="text-xs capitalize ml-2">
+                                        ( kids )
+                                    </span>
+                                )}
+                            </h2>
+                        </section>
                     </button>
                 ))
             }
@@ -91,7 +103,7 @@ export default function Profiles() {
                 onClick={() => handleProfileClick(guestProfile)}
                 id={guestProfile.uuid}
                 data-uuid={guestProfile.uuid}
-                class="profileClass flex flex-col items-center gap-y-2 hover:scale-125 transition-all duration-300"
+                class="flex flex-col items-center gap-y-2 hover:scale-125 transition-all duration-300"
             >
                 <img
                     src={`${avatarApiUrl}${guestProfile.name}`}

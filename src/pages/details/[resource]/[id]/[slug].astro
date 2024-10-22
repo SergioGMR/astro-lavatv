@@ -23,9 +23,6 @@ const genres = formater.format(details.genres.map((genre) => genre.name));
 ---
 
 <Layout title={details.title ?? details.name}>
-    <div class="mt-4 ml-10 lg:ml-0">
-        <BackButton text="Volver" />
-    </div>
     <Image
         src={backgroundImage}
         alt={details.title ?? details.name}
@@ -34,19 +31,24 @@ const genres = formater.format(details.genres.map((genre) => genre.name));
         class="absolute -z-10 top-0 left-0 w-full h-full object-cover opacity-80 aspect-video"
         transition:name=`image-${resource}-${id}`
     />
-    <section class="flex gap-x-10">
+    <div class="mt-4 ml-10 lg:ml-0">
+        <BackButton text="Volver" />
+    </div>
+    <section class="flex flex-col lg:flex-row gap-x-0 lg:gap-x-10">
         <!-- Movie Info -->
         <div
-            class="flex flex-col justify-end items-start max-w-2xl h-[calc(100vh-10rem)]"
+            class="flex flex-col justify-end items-start lg:max-w-2xl h-[calc(100vh-10rem)]"
         >
-            <div class="space-y-6 bg-black/50 p-10 rounded-lg w-full">
+            <div
+                class="flex flex-col space-y-6 bg-black/50 p-10 rounded-lg w-full"
+            >
                 <h2
                     transition:name={`title-${resource}-${id}`}
                     class="text-gray-200 text-6xl font-bold capitalize underline decoration-solid underline-offset-8"
                 >
                     {details.title ?? details.name}
                 </h2>
-                <p class="flex text-xl text-gray-200 min-h-4">
+                <p class="text-xl text-gray-200 min-h-4">
                     {
                         details.overview
                             ? details.overview.slice(0, 125) + "..."
@@ -74,18 +76,21 @@ const genres = formater.format(details.genres.map((genre) => genre.name));
                         </p>
                     )
                 }
-                <div class="flex space-x-4 w-full">
+                <div
+                    class="flex flex-col md:flex-row space-x-0 md:space-x-4 space-y-4 md:space-y-0 w-full"
+                >
                     <button
                         id="playButton"
                         class="bg-white text-black hover:bg-gray-200 px-4 py-2 rounded flex items-center"
                     >
-                        <Icon name="play" class="w-4 h-4 mr-2" /> Reproducir
+                        <Icon name="play" class="w-4 h-4 mr-2" />
+                        <span class="block lg:hidden xl:block">Play</span>
                     </button>
                     <button
                         id="infoButton"
                         class="bg-gray-800 text-white hover:bg-gray-700 px-4 py-2 rounded flex items-center"
                     >
-                        <Icon name="info" class="w-4 h-4 mr-2" /> Más Información
+                        <Icon name="info" class="w-4 h-4 mr-2" />Info
                     </button>
                     <button
                         class="text-white hover:text-gray-300 px-4 py-2 rounded flex items-center"
