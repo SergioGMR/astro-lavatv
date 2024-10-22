@@ -66,7 +66,6 @@ import NavProfile from "./NavProfile";
 </div>
 <script>
   const activeProfile = JSON.parse(localStorage.getItem("activeProfile"));
-  console.log(activeProfile);
   const menuButton = document.getElementById("menu-button");
   const mobileMenu = document.getElementById("mobile-menu");
 
@@ -76,7 +75,6 @@ import NavProfile from "./NavProfile";
 
   const navButtons = document.querySelectorAll(".nav-button");
   if (activeProfile?.kind === "kids") {
-    console.log("kids");
     navButtons.forEach((button) => {
       const text = button.textContent.trim().toLocaleLowerCase();
       if (text !== "xxx") {
