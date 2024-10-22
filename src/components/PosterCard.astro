@@ -9,9 +9,12 @@ interface Props {
 }
 
 const { movie } = Astro.props;
+console.log(
+    `${movie.title ?? movie.name} - ${Math.floor(movie.vote_average / 2)}`,
+);
 
 const stars = Array.from({ length: 5 }, (_, index) => ({
-    filled: index < Math.floor(movie.vote_average),
+    filled: index < Math.floor(movie.vote_average / 2),
 }));
 const releaseDate = getLocaleDate(movie.release_date ?? movie.first_air_date);
 const slug = slugify(movie.title ?? movie.name);
