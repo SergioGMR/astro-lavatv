@@ -1,5 +1,5 @@
 const baseUrl = "https://api.themoviedb.org/3"
-const endUrl = "/popular?include_adult=false&language=es-ES&page=1&sort_by=popularity.desc&api_key="
+const endUrl = "/popular?include_adult=false&language=es-ES&region=es_ES&page=1&api_key="
 const options = { method: 'GET', headers: { accept: 'application/json' } };
 const getPopularMovies = async () => {
     const url = `${baseUrl}/movie${endUrl}${import.meta.env.TMDB_API_KEY}`

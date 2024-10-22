@@ -33,8 +33,10 @@ export default function ProfileSwitcher() {
             navButtons.forEach((button) => {
                 const text = button.textContent.trim().toLocaleLowerCase();
                 if (text === "xxx") {
-                    button.classList.toggle("hidden");
-                    button.classList.toggle("flex");
+                    button.classList.remove("flex");
+                } else {
+                    button.classList.remove("hidden");
+                    button.classList.add("flex");
                 }
             });
         } else {
