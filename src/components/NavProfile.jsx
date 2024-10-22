@@ -34,6 +34,7 @@ export default function ProfileSwitcher() {
                 const text = button.textContent.trim().toLocaleLowerCase();
                 if (text === "xxx") {
                     button.classList.remove("flex");
+                    button.classList.add("hidden");
                 } else {
                     button.classList.remove("hidden");
                     button.classList.add("flex");

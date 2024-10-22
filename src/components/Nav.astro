@@ -3,6 +3,7 @@ import buttons from "src/data/buttons";
 import NavButton from "@components/ui/NavButton.astro";
 import Time from "./Time";
 import NavProfile from "./NavProfile";
+import { SearchIcon } from "lucide-react";
 ---
 
 <nav
@@ -51,6 +52,9 @@ import NavProfile from "./NavProfile";
 
   <!-- Reloj y clima -->
   <div class="hidden lg:flex justify-end items-center gap-x-10">
+    <!-- <div class="size-16" id="search-icon">
+      <SearchIcon className="text-white size-full cursor-pointer" />
+    </div> -->
     <Time client:only="react" />
     <!-- <Weather client:load/> -->
     <NavProfile client:load />
@@ -63,6 +67,19 @@ import NavProfile from "./NavProfile";
   class="lg:hidden hidden flex-col items-center bg-black m-10 gap-y-12 w-1/3 md:w-1/6"
 >
   {buttons.map((button) => <NavButton text={button.text} href={button.href} />)}
+</div>
+<div id="search-container" class="flex hidden justify-center items-center mt-4">
+  <input
+    type="search"
+    class="w-1/5 px-4 py-2 rounded-md bg-black focus:bg-white focus:text-black"
+    id="search-input"
+    placeholder="Buscar..."
+  />
+</div>
+<div
+  id="badge-container"
+  class="flex hidden justify-center items-center w-full"
+>
 </div>
 <script>
   const activeProfile = JSON.parse(localStorage.getItem("activeProfile"));
@@ -88,4 +105,119 @@ import NavProfile from "./NavProfile";
       button.classList.add("flex");
     });
   }
+
+  document.addEventListener("keydown", (event) => {
+    if (event.shiftKey && event.key === "K") {
+      event.preventDefault();
+      toggleSearch();
+    }
+  });
+
+  const toggleSearch = () => {
+    const searchContainer = document.getElementById("search-container");
+    const searchInput = document.getElementById("search-input");
+
+    if (searchContainer.classList.contains("hidden")) {
+      searchContainer.classList.remove("hidden");
+      searchInput.focus();
+    } else {
+      hideSearch();
+    }
+  };
+
+  const hideSearch = () => {
+    const searchContainer = document.getElementById("search-container");
+    const searchInput = document.getElementById("search-input");
+    searchContainer.classList.add("hidden");
+    searchInput.value = "";
+  };
+
+  document.addEventListener("click", (event) => {
+    const searchContainer = document.getElementById("search-container");
+    const searchInput = document.getElementById("search-input");
+    if (
+      !searchContainer.contains(event.target) &&
+      event.target !== searchInput
+    ) {
+      hideSearch();
+    }
+  });
+
+  const searchInput = document.getElementById("search-input");
+  const searchContainer = document.getElementById("search-container");
+  let timeoutId;
+
+  searchInput.addEventListener("keyup", () => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => {
+      const searchTerm = searchInput.value.toLowerCase();
+      const posters = document.querySelectorAll(".poster");
+      posters.forEach((poster) => {
+        const title = poster.getAttribute("data-title").toLowerCase();
+        if (title.includes(searchTerm)) {
+          poster.classList.remove("hidden");
+        } else {
+          poster.classList.add("hidden");
+        }
+      });
+    }, 250);
+  });
+
+  // Crear y añadir el badge para limpiar la búsqueda
+  const createClearBadge = () => {
+    const badge = document.createElement("span");
+    badge.className =
+      "px-2 py-1 bg-gray-200 text-gray-700 text-xs font-medium rounded-full cursor-pointer hover:bg-gray-300";
+    badge.id = "clear-search-badge";
+    badge.style.display = "block";
+    const badgeContainer = document.getElementById("badge-container");
+    badgeContainer.appendChild(badge);
+
+    badge.addEventListener("click", () => {
+      if (searchInput instanceof HTMLInputElement) {
+        searchInput.value = "";
+        badge.style.display = "none";
+        const event = new Event("keyup");
+        searchInput.dispatchEvent(event);
+      }
+    });
+  };
+
+  createClearBadge();
+
+  // Modificar el evento keyup para mostrar/ocultar el badge
+  searchInput.addEventListener("keyup", () => {
+    clearTimeout(timeoutId);
+    const clearBadge = document.getElementById("clear-search-badge");
+    const badgeContainer = document.getElementById("badge-container");
+
+    timeoutId = setTimeout(() => {
+      if (searchInput instanceof HTMLInputElement) {
+        const searchTerm = searchInput.value.trim();
+        const posters = document.querySelectorAll(".poster");
+
+        posters.forEach((poster) => {
+          const title = poster.getAttribute("data-title")?.toLowerCase() || "";
+          if (title.includes(searchTerm.toLowerCase())) {
+            poster.classList.remove("hidden");
+          } else {
+            poster.classList.add("hidden");
+          }
+        });
+
+        // Mostrar u ocultar el badge según si hay texto en el input
+        if (searchTerm.length > 0) {
+          clearBadge.textContent = `"${searchTerm}"`;
+          clearBadge.style.display = "block";
+          badgeContainer.classList.remove("hidden");
+          const rect = searchContainer.getBoundingClientRect();
+          clearBadge.style.left = `${rect.right}px`;
+          clearBadge.style.top = `${rect.bottom + 8}px`;
+        } else {
+          clearBadge.style.display = "none";
+          badgeContainer.classList.add("hidden");
+        }
+      }
+    }, 250);
+  });
 </script>

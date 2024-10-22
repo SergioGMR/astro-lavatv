@@ -8,7 +8,7 @@ const popularMovies = await getPopularMovies();
     Películas Populares
 </h2>
 <div
-    class="flex flex-wrap justify-center lg:justify-between items-center w-full mx-auto md:mx-12 lg:mx-0 gap-12"
+    class="flex flex-wrap justify-center lg:justify-start items-center w-full mx-auto md:mx-12 lg:mx-0 gap-12"
 >
     {popularMovies.map((movie) => <PosterCard movie={movie} />)}
 </div>

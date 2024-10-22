@@ -1,19 +1,19 @@
 const buttons = [
     {
         text: "Peliculas",
-        href: "/peliculas",
+        href: "/movies",
     },
     {
         text: "Series",
-        href: "/series",
+        href: "/tvshows",
     },
     {
         text: "Deportes",
-        href: "/deportes",
+        href: "/sports",
     },
     {
         text: "TV",
-        href: "/tv",
+        href: "/livetv",
     },
     {
         text: "Radio",

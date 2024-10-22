@@ -18,7 +18,11 @@ const slug = slugify(movie.title ?? movie.name);
 const type = movie.title ? "movie" : "tv";
 ---
 
-<a href={`/details/${type}/${movie.id}/${slug}`}>
+<a
+    href={`/details/${type}/${movie.id}/${slug}`}
+    class="poster"
+    data-title={movie.title ?? movie.name}
+>
     <div class="relative w-64 h-96 rounded-lg overflow-hidden group">
         <div
             transition:name={`image-${type}-${movie.id}`}
