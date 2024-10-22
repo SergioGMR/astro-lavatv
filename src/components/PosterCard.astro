@@ -21,6 +21,7 @@ const type = movie.title ? "movie" : "tv";
 <a href={`/details/${type}/${movie.id}/${slug}`}>
     <div class="relative w-64 h-96 rounded-lg overflow-hidden group">
         <div
+            transition:name={`image-${type}-${movie.id}`}
             class="absolute inset-0 bg-cover bg-center transition-transform duration-300 ease-in-out group-hover:scale-110"
             style={`background-image: url(${baseImgPath}${movie.backdrop_path})`}
         >
@@ -32,7 +33,10 @@ const type = movie.title ? "movie" : "tv";
         <div
             class="absolute inset-0 p-6 flex flex-col justify-end transition-transform duration-300 ease-in-out group-hover:translate-y-2"
         >
-            <h2 class="text-2xl font-bold text-white mb-2">
+            <h2
+                transition:name={`title-${type}-${movie.id}`}
+                class="text-2xl font-bold text-white mb-2"
+            >
                 {movie.title ?? movie.name}
             </h2>
             <p class="text-sm text-gray-300 mb-4">

@@ -18,12 +18,11 @@ export default function ProfileSwitcher() {
             if (savedActiveProfile) {
                 setCurrentProfile(JSON.parse(savedActiveProfile))
             }
-            console.log(currentProfile)
         }
     }, [])
     const handleProfileChange = (profile) => {
+        localStorage.setItem("activeProfile", JSON.stringify(profile))
         setCurrentProfile(profile)
-        // Aquí puedes añadir lógica adicional para manejar el cambio de perfil
     }
 
     const handleLogout = () => {
@@ -54,12 +53,13 @@ export default function ProfileSwitcher() {
 
             <DropdownMenu.Portal>
                 <DropdownMenu.Content
+                    key="content"
                     className="min-w-56 rounded-md bg-white p-2 shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),_0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)] will-change-[opacity,transform] data-[side=bottom]:animate-slideUpAndFade data-[side=left]:animate-slideRightAndFade data-[side=right]:animate-slideLeftAndFade data-[side=top]:animate-slideDownAndFade"
                     sideOffset={5}
                 >
                     {
                         profiles.map((profile) => (
-                            <DropdownMenu.Item className={`group ${currentProfile?.id === profile.id ? "bg-violet-500 text-white" : ""} hover:bg-black hover:text-white relative flex h-10 select-none items-center rounded-md pl-6 pr-2 text-sm leading-none text-violet11 outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-violet9 data-[disabled]:text-mauve8 data-[highlighted]:text-violet1`}>
+                            <DropdownMenu.Item key={profile.id} className="group hover:bg-black hover:text-white relative flex h-10 select-none items-center rounded-md pl-6 pr-2 text-sm leading-none outline-none">
                                 <button className="flex items-center w-full" onClick={() => handleProfileChange(profile)}>
                                     <Avatar.Root className="inline-flex mr-6 size-6 select-none items-center justify-center overflow-hidden rounded bg-blackA1 align-middle">
                                         <Avatar.Image
@@ -74,8 +74,8 @@ export default function ProfileSwitcher() {
                             </DropdownMenu.Item>
                         ))
                     }
-                    <DropdownMenu.Separator />
-                    <DropdownMenu.Item className="group hover:bg-black hover:text-white relative flex h-10 select-none items-center rounded-md pl-6 pr-2 text-sm leading-none text-violet11 outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-violet9 data-[disabled]:text-mauve8 data-[highlighted]:text-violet1">
+                    <DropdownMenu.Separator key="separator" className="h-[1px] bg-gray-200 my-2" />
+                    <DropdownMenu.Item key="logout" className="group hover:bg-black hover:text-white relative flex h-10 select-none items-center rounded-md pl-6 pr-2 text-sm leading-none text-violet11 outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-violet9 data-[disabled]:text-mauve8 data-[highlighted]:text-violet1">
                         <button className="flex items-center" onClick={handleLogout}>
                             <PowerOffIcon className="text-red-500 w-4 h-4 mr-6" />
                             Cerrar sesión

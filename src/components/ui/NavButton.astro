@@ -1,0 +1,31 @@
+---
+interface Props {
+    text?: string;
+    href?: string;
+    icon?: string;
+    iconPosition?: "left" | "right";
+    id?: string;
+}
+const { text, href, icon, iconPosition, id } = Astro.props as Props;
+import { Icon } from "astro-icon/components";
+const buttonId =
+    id ?? `nav-button-${Math.random().toString(36).substring(2, 15)}`;
+---
+
+<a
+    id={buttonId}
+    class="flex justify-between items-center cursor-pointer px-4 py-2 max-w-max rounded-md text-white hover:bg-white/15"
+    href={href}
+>
+    {
+        icon && iconPosition === "left" && (
+            <Icon name={icon} class="size-4 mr-2" />
+        )
+    }
+    {text && <span class="text-lg">{text}</span>}
+    {
+        icon && iconPosition === "right" && (
+            <Icon name={icon} class="size-6 ml-2" />
+        )
+    }
+</a>

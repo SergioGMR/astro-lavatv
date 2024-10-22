@@ -1,0 +1,19 @@
+---
+interface Props {
+    text?: string;
+    id?: string;
+}
+import { Icon } from "astro-icon/components";
+const { text, id } = Astro.props as Props;
+const buttonId =
+    id ?? `nav-button-${Math.random().toString(36).substring(2, 15)}`;
+---
+
+<button
+    onclick="window.history.back()"
+    id={buttonId}
+    class="flex justify-between items-center cursor-pointer px-4 py-2 max-w-max rounded-md text-white hover:bg-white/15"
+>
+    <Icon name="arrow-left" class="size-4 mr-2" />
+    {text && <span class="text-lg">{text}</span>}
+</button>

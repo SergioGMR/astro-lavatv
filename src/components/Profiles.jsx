@@ -43,15 +43,19 @@ export default function Profiles() {
             }
         }
     }, [])
+
+    const handleSetActiveProfile = (profile) => {
+        localStorage.setItem("activeProfile", JSON.stringify(profile))
+        setActiveProfile(profile)
+    }
+
     const handleProfileClick = (profile) => {
         if (profile.kind === 'guest') {
-            localStorage.removeItem("activeProfile")
-            setActiveProfile(profile)
             localStorage.removeItem("profiles")
             setProfiles([])
+            handleSetActiveProfile(profile)
         } else {
-            setActiveProfile(profile)
-            localStorage.setItem("activeProfile", JSON.stringify(profile))
+            handleSetActiveProfile(profile)
         }
         window.location.href = "/main"
     }

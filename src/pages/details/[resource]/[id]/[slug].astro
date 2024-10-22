@@ -1,5 +1,5 @@
 ---
-import NavButton from "@components/NavButton.astro";
+import BackButton from "@components/ui/BackButton.astro";
 import YouTubePlayerWithCarousel from "@components/YouTubePlayerWithCarousel";
 import Layout from "@layouts/Layout.astro";
 import { getBackropImage, getDetails } from "@lib/details";
@@ -24,12 +24,7 @@ const genres = formater.format(details.genres.map((genre) => genre.name));
 
 <Layout title={details.title ?? details.name}>
     <div class="mt-4 ml-10 lg:ml-0">
-        <NavButton
-            text="Volver"
-            href="/"
-            icon="arrow-left"
-            iconPosition="left"
-        />
+        <BackButton text="Volver" />
     </div>
     <Image
         src={backgroundImage}
@@ -37,7 +32,7 @@ const genres = formater.format(details.genres.map((genre) => genre.name));
         width={1280}
         height={720}
         class="absolute -z-10 top-0 left-0 w-full h-full object-cover opacity-80 aspect-video"
-        transition:name=`detail-${resource}-${id}`
+        transition:name=`image-${resource}-${id}`
     />
     <section class="flex gap-x-10">
         <!-- Movie Info -->
@@ -46,6 +41,7 @@ const genres = formater.format(details.genres.map((genre) => genre.name));
         >
             <div class="space-y-6 bg-black/50 p-10 rounded-lg w-full">
                 <h2
+                    transition:name={`title-${resource}-${id}`}
                     class="text-gray-200 text-6xl font-bold capitalize underline decoration-solid underline-offset-8"
                 >
                     {details.title ?? details.name}
