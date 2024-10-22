@@ -30,7 +30,6 @@ export default function ProfileSwitcher() {
         localStorage.setItem("currentProfile", JSON.stringify(profile))
         const navButtons = document.querySelectorAll(".nav-button");
         if (currentProfile?.kind === "kids") {
-            console.log("kids");
             navButtons.forEach((button) => {
                 const text = button.textContent.trim().toLocaleLowerCase();
                 if (text === "xxx") {
