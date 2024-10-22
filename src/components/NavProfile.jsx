@@ -27,7 +27,7 @@ export default function ProfileSwitcher() {
 
     const handleProfileChange = (profile) => {
         setCurrentProfile(profile)
-        console.log(currentProfile);
+        localStorage.setItem("currentProfile", JSON.stringify(profile))
         const navButtons = document.querySelectorAll(".nav-button");
         if (currentProfile?.kind === "kids") {
             console.log("kids");
@@ -96,7 +96,11 @@ export default function ProfileSwitcher() {
                             </DropdownMenu.Item>
                         ))
                     }
-                    <DropdownMenu.Separator key="separator" className="h-[1px] bg-gray-200 my-2" />
+                    {
+                        profiles.length > 0 && (
+                            <DropdownMenu.Separator key="separator" className="h-[1px] bg-gray-200 my-2" />
+                        )
+                    }
                     <DropdownMenu.Item key="logout" className="group hover:bg-black hover:text-white relative flex h-10 select-none items-center rounded-md pl-6 pr-2 text-sm leading-none text-violet11 outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-violet9 data-[disabled]:text-mauve8 data-[highlighted]:text-violet1">
                         <button className="flex items-center" onClick={handleLogout}>
                             <PowerOffIcon className="text-red-500 w-4 h-4 mr-6" />
