@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
 import { avatarApiUrl } from "../lib/utils"
+import { useStore } from "@hooks/useStore"
 
 const guestProfile = {
     name: "Guest",
@@ -35,8 +36,8 @@ const hcprofiles = [
 ]
 
 export default function Profiles() {
+    const { currentProfile, setCurrentProfile } = useStore()
     const [profiles, setProfiles] = useState([])
-    const [activeProfile, setActiveProfile] = useState(null)
     const localStorage = typeof window !== "undefined" ? window.localStorage : null
     useEffect(() => {
         if (typeof window !== "undefined") {
@@ -47,25 +48,25 @@ export default function Profiles() {
                 setProfiles(hcprofiles)
                 localStorage.setItem("profiles", JSON.stringify(hcprofiles))
             }
-            const savedActiveProfile = localStorage.getItem("activeProfile")
-            if (savedActiveProfile) {
-                setActiveProfile(JSON.parse(savedActiveProfile))
+            const savedCurrentProfile = localStorage.getItem("currentProfile")
+            if (savedCurrentProfile) {
+                setCurrentProfile(JSON.parse(savedCurrentProfile))
             }
         }
     }, [])
 
-    const handleSetActiveProfile = (profile) => {
-        localStorage.setItem("activeProfile", JSON.stringify(profile))
-        setActiveProfile(profile)
+    const handlesetCurrentProfile = (profile) => {
+        localStorage.setItem("currentProfile", JSON.stringify(profile))
+        setCurrentProfile(profile)
     }
 
     const handleProfileClick = (profile) => {
         if (profile.kind === 'guest') {
             localStorage.removeItem("profiles")
             setProfiles([])
-            handleSetActiveProfile(profile)
+            handlesetCurrentProfile(profile)
         } else {
-            handleSetActiveProfile(profile)
+            handlesetCurrentProfile(profile)
         }
         window.location.href = "/main"
     }
@@ -78,7 +79,7 @@ export default function Profiles() {
                         onClick={() => handleProfileClick(profile)}
                         data-uuid={profile.uuid}
                         id={profile.uuid}
-                        class={`flex flex-col justify-end items-center gap-y-2 hover:scale-125 transition-all duration-300 ${activeProfile?.uuid === profile.uuid ? "scale-125" : ""}`}
+                        class={`flex flex-col justify-end items-center gap-y-2 hover:scale-125 transition-all duration-300 ${currentProfile?.uuid === profile.uuid ? "scale-125" : ""}`}
                     >
                         <img
                             loading="lazy"

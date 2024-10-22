@@ -4,8 +4,9 @@ import * as Avatar from "@radix-ui/react-avatar"
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu"
 import { avatarApiUrl } from "@lib/utils"
 import { PowerOffIcon } from "lucide-react"
+import { useStore } from "@hooks/useStore"
 export default function ProfileSwitcher() {
-    const [currentProfile, setCurrentProfile] = useState(null)
+    const { currentProfile, setCurrentProfile } = useStore()
     const [profiles, setProfiles] = useState([])
     const localStorage = typeof window !== "undefined" ? window.localStorage : null
     useEffect(() => {
@@ -14,19 +15,40 @@ export default function ProfileSwitcher() {
             if (savedProfiles) {
                 setProfiles(JSON.parse(savedProfiles))
             }
-            const savedActiveProfile = localStorage.getItem("activeProfile")
-            if (savedActiveProfile) {
-                setCurrentProfile(JSON.parse(savedActiveProfile))
+            const savedCurrentProfile = localStorage.getItem("currentProfile")
+            if (savedCurrentProfile) {
+                setCurrentProfile(JSON.parse(savedCurrentProfile))
             }
         }
-    }, [])
+        if (currentProfile) {
+            handleProfileChange(currentProfile)
+        }
+    }, [currentProfile])
+
     const handleProfileChange = (profile) => {
-        localStorage.setItem("activeProfile", JSON.stringify(profile))
         setCurrentProfile(profile)
+        console.log(currentProfile);
+        const navButtons = document.querySelectorAll(".nav-button");
+        if (currentProfile?.kind === "kids") {
+            console.log("kids");
+            navButtons.forEach((button) => {
+                const text = button.textContent.trim().toLocaleLowerCase();
+                if (text === "xxx") {
+                    button.classList.toggle("hidden");
+                    button.classList.toggle("flex");
+                }
+            });
+        } else {
+            navButtons.forEach((button) => {
+                button.classList.remove("hidden");
+                button.classList.add("flex");
+            });
+        }
     }
 
     const handleLogout = () => {
-        localStorage.removeItem("activeProfile")
+        setCurrentProfile(null)
+        localStorage.removeItem("currentProfile")
         localStorage.removeItem("profiles")
         window.location.href = "/"
     }

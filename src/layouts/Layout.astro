@@ -1,6 +1,6 @@
 ---
 import { ClientRouter } from "astro:transitions";
-import Nav from "../components/Nav.astro";
+import Nav from "@components/Nav.astro";
 const imageDomain = "https://image.tmdb.org";
 
 interface Props {
@@ -31,9 +31,7 @@ const { title } = Astro.props;
     <main
       class="flex flex-col min-h-screen xl:max-w-[80rem] 2xl:max-w-[96rem] mx-auto"
     >
-      <header>
-        <Nav />
-      </header>
+      <Nav />
       <slot />
       <footer></footer>
     </main>
